@@ -16,6 +16,7 @@ class MainController extends Controller
     //     print_r($json);
     // }
 
+    // Displays Index / Home Page Function
     public function index() {
         $data = array();
         if(Session::has('loginId')) {
@@ -27,6 +28,7 @@ class MainController extends Controller
         return view('pages.index', compact('json', 'data'));
     }
 
+    // Displays About Page Function
     public function about() {
         $data = array();
         if(Session::has('loginId')) {
@@ -36,6 +38,7 @@ class MainController extends Controller
         return view('pages.about', compact('data'));
     }
 
+    // Displays Wishlist Page Function
     public function wishlist() {
         $data = array();
         if(Session::has('loginId')) {
@@ -45,31 +48,45 @@ class MainController extends Controller
         return view('pages.add-to-wishlist', compact('data'));
     }
 
+    // Display Cart Page Function
     public function cart() {
         $data = array();
         if(Session::has('loginId')) {
             $data = Customer::where('id', '=', Session::get('loginId')) -> first();
-        }
 
-        $contents = File::get(base_path('public/assets/dataset_asos-com-scraper.json'));
-        $json = json_decode(json:$contents, associative: true);
+            $contents = File::get(base_path('public/assets/dataset_asos-com-scraper.json'));
+            $json = json_decode(json:$contents, associative: true);
 
         $cart = Cart::all();
 
         $results = [];
+        $total = 0;
         
         foreach ($cart as $cartItem) {
             if ($cartItem -> customer_id == $data -> id) {
             foreach ($json as $jsonItem) {
                 if ($jsonItem['id'] == $cartItem->product_id) {
-                    $results[] = $jsonItem;
+                    $results[] = [
+                        'product' => $jsonItem,
+                        'cartItem' => $cartItem
+                    ];
+                    $price = $jsonItem['price']['current']['value'] ?? 0;
+                    $total += $price * $cartItem->quantity;
                 }
             }
         }
         }
-        return view('pages.cart', compact('data', 'cartItem', 'results'));
+        // dd($total);
+            return view('pages.cart', compact('data', 'results', 'total'));
+        } else {
+            return view('pages.cart', compact('data'));
+        }
+
+
+        
     }
 
+    // Adds Product to Cart Function
     public function addToCart(Request $request) {
         $validateData = $request -> validate([
             'customer_id' => 'required',
@@ -89,15 +106,48 @@ class MainController extends Controller
         return redirect() -> back() -> with('success', 'Added to Cart');
     }
 
+    // Removes Product From Cart Function
+    public function removeFromCart($id) {
+        $cart = Cart::findOrFail($id);
+
+        $cart -> delete();
+        return redirect() -> back() -> with('success', 'Removed From Cart');
+    }
+
+    // Display Checkout Page Function
     public function checkout() {
         $data = array();
         if(Session::has('loginId')) {
             $data = Customer::where('id', '=', Session::get('loginId')) -> first();
         }
 
-        return view('pages.checkout', compact('data'));
+        $contents = File::get(base_path('public/assets/dataset_asos-com-scraper.json'));
+        $json = json_decode(json:$contents, associative: true);
+
+        $cart = Cart::all();
+
+        $results = [];
+        $total = 0;
+        
+        foreach ($cart as $cartItem) {
+            if ($cartItem -> customer_id == $data -> id) {
+            foreach ($json as $jsonItem) {
+                if ($jsonItem['id'] == $cartItem->product_id) {
+                    $results[] = [
+                        'product' => $jsonItem,
+                        'cartItem' => $cartItem
+                    ];
+                    $price = $jsonItem['price']['current']['value'] ?? 0;
+                    $total += $price * $cartItem->quantity;
+                }
+            }
+        }
     }
 
+        return view('pages.checkout', compact('data', 'total', 'results'));
+    }
+
+    // Display Contact Page Function
     public function contact() {
         $data = array();
         if(Session::has('loginId')) {
@@ -107,6 +157,7 @@ class MainController extends Controller
         return view('pages.contact', compact('data'));
     }
 
+    // Display Men Page Function
     public function men() {
         $data = array();
         if(Session::has('loginId')) {
@@ -116,6 +167,7 @@ class MainController extends Controller
         return view('pages.men', compact('data'));
     }
 
+    // Display Order Page Function
     public function orderComplete() {
         $data = array();
         if(Session::has('loginId')) {
@@ -125,6 +177,7 @@ class MainController extends Controller
         return view('pages.order-complete', compact('data'));
     }
 
+    // Display Product Details Page Function
     public function productDetail($id) {
         $data = array();
         if(Session::has('loginId')) {
@@ -142,6 +195,7 @@ class MainController extends Controller
         
     }
 
+    // Display Women Page Function
     public function women() {
         $data = array();
         if(Session::has('loginId')) {

@@ -9,10 +9,12 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    // Display Sign Up Page Function
     public function signup() {
         return view('auth.signup');
     }
 
+    // Stores Sign Up Data Function
     public function postSignup(Request $request) {
 
         $validateData = $request -> validate([
@@ -38,10 +40,12 @@ class AuthController extends Controller
         
     }
 
+    // Display Login Page Function
     public function login() {
         return view('auth.login');
     }
 
+    // Login Function
     public function postLogin(Request $request) {
         $request -> validate([
             'email' => 'required|email',
@@ -61,6 +65,7 @@ class AuthController extends Controller
         }
     }
 
+    // Logout Function
     public function logout() {
         if(Session::has('loginId')) {
             Session::pull('loginId');

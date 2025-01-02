@@ -140,10 +140,11 @@
 									<h2>Cart Total</h2>
 									<ul>
 										<li>
-											<span>Subtotal</span> <span>$100.00</span>
+											<span>Subtotal</span> <span>${{ number_format($total, 2) }}</span>
 											<ul>
-												<li><span>1 x Product Name</span> <span>$99.00</span></li>
-												<li><span>1 x Product Name</span> <span>$78.00</span></li>
+												@foreach ($results as $result)
+													<li><span>{{ $result['cartItem']->quantity }} x {{$result['product']['brandName']}}</span> <span>{{$result['product']['price']['current']['text'] ?? 'N/A'}}</span></li>
+												@endforeach
 											</ul>
 										</li>
 										<li><span>Shipping</span> <span>$0.00</span></li>
