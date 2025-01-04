@@ -104,7 +104,10 @@
 								</span>
 							</div>
 							<input type="text" name="product_id" value="{{$file['id']}}">
-							<input type="text" name="customer_id" value="{{$data -> id}}">
+							@if (Session::has('loginId'))
+								<input type="text" name="customer_id" value="{{$data -> id}}">
+							@endif
+							
                   			<div class="row">
 	                  			<div class="col-sm-12 text-center">
 									@if (Session::has('loginId'))

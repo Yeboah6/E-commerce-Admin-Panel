@@ -17,6 +17,7 @@ Route::post('/add-to-cart', [MainController::class, 'addToCart']) -> middleware(
 Route::get('/remove-from-cart/{id}', [MainController::class, 'removeFromCart']) -> middleware('isLoggedIn');
 
 Route::get('/checkout', [MainController::class, 'checkout']);
+Route::post('/checkout', [MainController::class, 'postCheckout']);
 
 Route::get('/contact', [MainController::class, 'contact']);
 

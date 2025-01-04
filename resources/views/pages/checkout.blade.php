@@ -38,99 +38,120 @@
 				</div>
 				<div class="row">
 					<div class="col-lg-8">
-						<form method="post" class="colorlib-form">
+						<form action="{{ url('/checkout') }}" method="POST" class="colorlib-form">
+							@if (Session::has('success'))
+				    	        	<div class="alert alert-success">{{ Session::get('success') }}</div>
+				            	@endif
+				            	@if (Session::has('fail'))
+				            		<div class="alert alert-danger">{{ Session::get('fail') }}</div>
+				            	@endif
+							@csrf
 							<h2>Billing Details</h2>
-		              	<div class="row">
-			               <div class="col-md-12">
-			                  <div class="form-group">
-			                  	<label for="country">Select Country</label>
-			                     <div class="form-field">
-			                     	<i class="icon icon-arrow-down3"></i>
-			                        <select name="people" id="people" class="form-control">
-				                      	<option value="#">Select country</option>
-				                        <option value="#">Alaska</option>
-				                        <option value="#">China</option>
-				                        <option value="#">Japan</option>
-				                        <option value="#">Korea</option>
-				                        <option value="#">Philippines</option>
-			                        </select>
-			                     </div>
-			                  </div>
-			               </div>
+								<input type="text" name="customer_id" value="{{ $data -> id}}">
+		              		<div class="row">
+			            	   <div class="col-md-12">
+			            	      <div class="form-group">
+			            	      	<label for="country">Select Country</label>
+			            	         <div class="form-field">
+			            	         	<i class="icon icon-arrow-down3"></i>
+			            	            <select name="country" id="people" class="form-control">
+				        	              	<option value="#">Select country</option>
+				        	                <option value="Ghana">Ghana</option>
+				        	                <option value="Alaska">Alaska</option>
+				        	                <option value="China">China</option>
+				        	                <option value="Japan">Japan</option>
+				        	                <option value="Korea">Korea</option>
+				        	                <option value="Philippines">Philippines</option>
+			            	            </select>
+			            	         </div>
+			            	      </div>
+			            	   </div>
 
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="fname">First Name</label>
-										<input type="text" id="fname" class="form-control" placeholder="Your firstname">
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="lname">Last Name</label>
-										<input type="text" id="lname" class="form-control" placeholder="Your lastname">
-									</div>
-								</div>
-
-								<div class="col-md-12">
-									<div class="form-group">
-										<label for="companyname">Company Name</label>
-			                    	<input type="text" id="companyname" class="form-control" placeholder="Company Name">
-			                  </div>
-			               </div>
-
-			               <div class="col-md-12">
-									<div class="form-group">
-										<label for="fname">Address</label>
-			                    	<input type="text" id="address" class="form-control" placeholder="Enter Your Address">
-			                  </div>
-			                  <div class="form-group">
-			                    	<input type="text" id="address2" class="form-control" placeholder="Second Address">
-			                  </div>
-			               </div>
-			            
-			               <div class="col-md-12">
-									<div class="form-group">
-										<label for="companyname">Town/City</label>
-			                    	<input type="text" id="towncity" class="form-control" placeholder="Town or City">
-			                  </div>
-			               </div>
-			            
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="stateprovince">State/Province</label>
-										<input type="text" id="fname" class="form-control" placeholder="State Province">
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="lname">Zip/Postal Code</label>
-										<input type="text" id="zippostalcode" class="form-control" placeholder="Zip / Postal">
-									</div>
-								</div>
-							
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="email">E-mail Address</label>
-										<input type="text" id="email" class="form-control" placeholder="State Province">
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="Phone">Phone Number</label>
-										<input type="text" id="zippostalcode" class="form-control" placeholder="">
-									</div>
-								</div>
-
-								<div class="col-md-12">
-									<div class="form-group">
-										<div class="radio">
-										  <label><input type="radio" name="optradio"> Create an Account? </label>
-										  <label><input type="radio" name="optradio"> Ship to different address</label>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="fname">First Name</label>
+											<input type="text" id="fname" name="first_name" class="form-control" placeholder="Your First name">
 										</div>
 									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="lname">Last Name</label>
+											<input type="text" id="lname" name="last_name" class="form-control" placeholder="Your Last name">
+										</div>
+									</div>
+
+									<div class="col-md-12">
+										<div class="form-group">
+											<label for="companyname">Company Name</label>
+			            	        	<input type="text" id="companyname" name="company_name" class="form-control" placeholder="Company Name">
+			            	      </div>
+			            	   </div>
+
+			            	   <div class="col-md-12">
+										<div class="form-group">
+											<label for="fname">Address</label>
+			            	        	<input type="text" id="address" name="address_1" class="form-control" placeholder="Enter Your Address">
+			            	      </div>
+			            	      <div class="form-group">
+			            	        	<input type="text" id="address2" name="address_2" class="form-control" placeholder="Second Address">
+			            	      </div>
+			            	   </div>
+						   
+			            	   <div class="col-md-12">
+										<div class="form-group">
+											<label for="companyname">Town/City</label>
+			            	        	<input type="text" id="towncity" name="city" class="form-control" placeholder="Town or City">
+			            	      </div>
+			            	   </div>
+						   
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="stateprovince">State/Province</label>
+											<input type="text" id="fname" name="state" class="form-control" placeholder="State Province">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="lname">Zip/Postal Code</label>
+											<input type="text" id="zippostalcode" name="zip_code" class="form-control" placeholder="Zip / Postal">
+										</div>
+									</div>
+								
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="email">E-mail Address</label>
+											<input type="email" id="email" name="email" class="form-control" placeholder="State Province">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="Phone">Phone Number</label>
+											<input type="text" id="zippostalcode" name="number" class="form-control" placeholder="Phone Number">
+										</div>
+									</div>
+
+									{{-- <div class="col-md-12">
+										<div class="form-group">
+											<label for="country">Select Payment Method</label>
+										   <div class="form-field">
+											   <i class="icon icon-arrow-down3"></i>
+											  <select name="payment_method" id="people" class="form-control">
+													<option value="#">Select Payment Method</option>
+												  <option value="Mobile Money">Mobile Money</option>
+												  <option value="Paypal">Paypal</option>
+											  </select>
+										   </div>
+										</div>
+									 </div> --}}
+		               		</div>
+							   <div class="row">
+								<div class="col-md-12 text-center">
+									<button type="submit" class="btn btn-primary">Add Address</button>
+
+									<p><a class="btn btn-primary" href="">Proceed to Payment</a></p>
 								</div>
-		               </div>
-		            </form>
+							</div>
+		            	</form>
 					</div>
 
 					<div class="col-lg-4">
@@ -143,57 +164,58 @@
 											<span>Subtotal</span> <span>${{ number_format($total, 2) }}</span>
 											<ul>
 												@foreach ($results as $result)
-													<li><span>{{ $result['cartItem']->quantity }} x {{$result['product']['brandName']}}</span> <span>{{$result['product']['price']['current']['text'] ?? 'N/A'}}</span></li>
+													<li>
+														<span style="font-weight: bold;">{{ $result['cartItem']->quantity }} x {{$result['product']['brandName']}}</span> <span>{{ isset($result['product']['price']['current']['value']) ? $result['product']['price']['current']['value'] * $result['cartItem']->quantity : 'N/A' }}</span>
+													</li>
 												@endforeach
 											</ul>
 										</li>
 										<li><span>Shipping</span> <span>$0.00</span></li>
-										<li><span>Order Total</span> <span>$180.00</span></li>
+										<li><span>Order Total</span> <span>${{ number_format($total, 2) }}</span></li>
 									</ul>
 								</div>
 						   </div>
 
 						   <div class="w-100"></div>
 
-						   <div class="col-md-12">
-								<div class="cart-detail">
-									<h2>Payment Method</h2>
-									<div class="form-group">
-										<div class="col-md-12">
-											<div class="radio">
-											   <label><input type="radio" name="optradio"> Direct Bank Tranfer</label>
+						   {{-- <form action="{{ url('/checkout') }}" method="post">
+							@if (Session::has('success'))
+				    	        	<div class="alert alert-success">{{ Session::get('success') }}</div>
+				            	@endif
+				            	@if (Session::has('fail'))
+				            		<div class="alert alert-danger">{{ Session::get('fail') }}</div>
+				            	@endif
+							@csrf
+								<div class="col-md-12">
+									<div class="cart-detail">
+										<h2>Payment Method</h2>
+										<div class="form-group">
+											<div class="col-md-12">
+												<div class="radio">
+												<label><input type="radio" name="Mobile_money"> Mobile Money</label>
+												</div>
 											</div>
 										</div>
-									</div>
-									<div class="form-group">
-										<div class="col-md-12">
-											<div class="radio">
-											   <label><input type="radio" name="optradio"> Check Payment</label>
+										<div class="form-group">
+											<div class="col-md-12">
+												<div class="radio">
+												<label><input type="radio" name="Paypal"> Paypal</label>
+												</div>
 											</div>
 										</div>
-									</div>
-									<div class="form-group">
-										<div class="col-md-12">
-											<div class="radio">
-											   <label><input type="radio" name="optradio"> Paypal</label>
-											</div>
-										</div>
-									</div>
-									<div class="form-group">
-										<div class="col-md-12">
-											<div class="checkbox">
-											   <label><input type="checkbox" value=""> I have read and accept the terms and conditions</label>
+										<div class="form-group">
+											<div class="col-md-12">
+												<div class="checkbox">
+												<label><input type="checkbox" value=""> I have read and accept the terms and conditions</label>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
+						   </form> --}}
+						
 						</div>
-						<div class="row">
-							<div class="col-md-12 text-center">
-								<p><a href="#" class="btn btn-primary">Place an order</a></p>
-							</div>
-						</div>
+						
 					</div>
 				</div>
 			</div>

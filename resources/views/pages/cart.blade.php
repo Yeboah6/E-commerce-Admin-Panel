@@ -57,7 +57,7 @@
 							</div>
 						</div>
 
-						@foreach ($results as $result)
+							@foreach ($results as $result)
 							<div class="product-cart d-flex">
 							<div class="one-forth">
 								<div class="product-img" style="background-image: url(https://{{$result['product']['imageUrl']}});">
@@ -89,6 +89,7 @@
 							</div>
 						</div>
 						@endforeach
+						
 					</div>
 				</div>
 				<div class="row row-pb-lg">
@@ -99,7 +100,7 @@
 									<form action="#">
 										<div class="row form-group">
 											<div class="col-sm-3">
-												<input type="submit" value="Checkout" class="btn btn-primary">
+												<a href="/checkout"><input type="button" value="Proceed to Checkout" class="btn btn-primary"></a>
 											</div>
 										</div>
 									</form>

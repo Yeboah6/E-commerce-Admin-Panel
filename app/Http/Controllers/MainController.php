@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Customer;
+use App\Models\DeliveryAddress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
@@ -76,14 +77,13 @@ class MainController extends Controller
             }
         }
         }
-        // dd($total);
+        // dd($data -> id);
             return view('pages.cart', compact('data', 'results', 'total'));
-        } else {
-            return view('pages.cart', compact('data'));
         }
-
-
-        
+        else {
+            // dd($data -> id);
+            return view('pages.cart#', compact('data'));
+        }
     }
 
     // Adds Product to Cart Function
@@ -145,6 +145,44 @@ class MainController extends Controller
     }
 
         return view('pages.checkout', compact('data', 'total', 'results'));
+    }
+
+    public function postCheckout(Request $request) {
+        $validateData = $request -> validate([
+            'customer_id' => 'required',
+
+            'country' => 'required|string',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'company_name' => 'string',
+            'address_1' => 'required|string',
+            'address_2' => 'string',
+            'city' => 'required|string',
+            'state' => 'required|string',
+            'zip_code' => 'required|string',
+            'email' => 'required|string|email',
+            'number' => 'required|string',
+        ]);
+
+        $address = new DeliveryAddress();
+
+        $address -> fill([
+            'customer_id' => $validateData['customer_id'],
+            'country' => $validateData['country'],
+            'first_name' => $validateData['first_name'],
+            'last_name' => $validateData['last_name'],
+            'company_name' => $validateData['company_name'],
+            'address_1' => $validateData['address_1'],
+            'address_2' => $validateData['address_2'],
+            'city' => $validateData['city'],
+            'state' => $validateData['state'],
+            'zip_code' => $validateData['zip_code'],
+            'email' => $validateData['email'],
+            'number' => $validateData['number'],
+        ]);
+
+        $address -> save();
+        return redirect('/order-complete') -> with('fail', 'Data Not Saved');
     }
 
     // Display Contact Page Function
