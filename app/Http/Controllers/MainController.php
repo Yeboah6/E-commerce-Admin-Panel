@@ -24,9 +24,15 @@ class MainController extends Controller
             $data = Customer::where('id', '=', Session::get('loginId')) -> first();
         }
 
+        $cartCount = 0;
+        if (!empty($data)) {
+            $cartCount = Cart::where('customer_id', $data->id)->count();
+        }
+
         $contents = File::get(base_path('public/assets/dataset_asos-com-scraper.json'));
         $json = json_decode(json:$contents, associative: true);
-        return view('pages.index', compact('json', 'data'));
+
+        return view('pages.index', compact('json', 'data', 'cartCount'));
     }
 
     // Displays About Page Function
@@ -55,10 +61,15 @@ class MainController extends Controller
         if(Session::has('loginId')) {
             $data = Customer::where('id', '=', Session::get('loginId')) -> first();
 
-            $contents = File::get(base_path('public/assets/dataset_asos-com-scraper.json'));
-            $json = json_decode(json:$contents, associative: true);
+        $contents = File::get(base_path('public/assets/dataset_asos-com-scraper.json'));
+        $json = json_decode(json:$contents, associative: true);
 
-        $cart = Cart::all();
+        $cartCount = 0;
+        if (!empty($data)) {
+            $cartCount = Cart::where('customer_id', $data->id)->count();
+        }
+
+        $cart = Cart::where('customer_id', $data->id)->get(); // Get only user's cart items
 
         $results = [];
         $total = 0;
@@ -78,7 +89,7 @@ class MainController extends Controller
         }
         }
         // dd($data -> id);
-            return view('pages.cart', compact('data', 'results', 'total'));
+            return view('pages.cart', compact('data', 'results', 'total', 'cartCount'));
         }
         else {
             // dd($data -> id);
@@ -116,15 +127,21 @@ class MainController extends Controller
 
     // Display Checkout Page Function
     public function checkout() {
-        $data = array();
+        $data = [];
         if(Session::has('loginId')) {
             $data = Customer::where('id', '=', Session::get('loginId')) -> first();
+        }
+
+       // Ensure $data is not empty before accessing its properties
+        $cartCount = 0;
+        if (!empty($data)) {
+            $cartCount = Cart::where('customer_id', $data->id)->count();
         }
 
         $contents = File::get(base_path('public/assets/dataset_asos-com-scraper.json'));
         $json = json_decode(json:$contents, associative: true);
 
-        $cart = Cart::all();
+        $cart = Cart::where('customer_id', $data->id)->get(); // Get only user's cart items
 
         $results = [];
         $total = 0;
@@ -144,7 +161,7 @@ class MainController extends Controller
         }
     }
 
-        return view('pages.checkout', compact('data', 'total', 'results'));
+        return view('pages.checkout', compact('data', 'total', 'results', 'cartCount'));
     }
 
     public function postCheckout(Request $request) {
@@ -222,12 +239,17 @@ class MainController extends Controller
             $data = Customer::where('id', '=', Session::get('loginId')) -> first();
         }
 
+        $cartCount = 0;
+        if (!empty($data)) {
+            $cartCount = Cart::where('customer_id', $data->id)->count();
+        }
+
         $contents = File::get(base_path('public/assets/dataset_asos-com-scraper.json'));
         $json = json_decode(json:$contents, associative: true);
 
         foreach($json as $file) {
             if ($file['id'] == $id) {
-                return view('pages.product-detail', compact('file', 'data'));
+                return view('pages.product-detail', compact('file', 'data', 'cartCount'));
             }
         }
         
@@ -241,5 +263,18 @@ class MainController extends Controller
         }
 
         return view('pages.women', compact('data'));
+    }
+
+
+    public function dashboard() {
+        return view('Admin.dashboard');
+    }
+
+    public function product() {
+        return view('Admin.products');
+    }
+
+    public function customer() {
+        return view('Admin.customers');
     }
 }

@@ -90,29 +90,31 @@
 				            		<div class="alert alert-danger">{{ Session::get('fail') }}</div>
 				            	@endif
 								@csrf
-							<div class="input-group mb-4">
-								<span class="input-group-btn">
-									<button type="button" class="quantity-left-minus btn" data-type="minus" data-field="">
-										<i class="icon-minus2"></i>
-									</button>
-								</span>
-								<input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
-								<span class="input-group-btn ml-1">
-									<button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
-										<i class="icon-plus2"></i>
-									</button>
-								</span>
-							</div>
-							<input type="text" name="product_id" value="{{$file['id']}}">
-							@if (Session::has('loginId'))
-								<input type="text" name="customer_id" value="{{$data -> id}}">
-							@endif
+								<div class="input-group mb-4">
+									<span class="input-group-btn">
+										<button type="button" class="quantity-left-minus btn" data-type="minus" data-field="">
+											<i class="icon-minus2"></i>
+										</button>
+									</span>
+									<input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
+									<span class="input-group-btn ml-1">
+										<button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
+											<i class="icon-plus2"></i>
+										</button>
+									</span>
+								</div>
+								<input type="text" hidden name="product_id" value="{{$file['id']}}">
+								@if (Session::has('loginId'))
+									<input type="text" hidden name="customer_id" value="{{$data -> id}}">
+								@endif
 							
-                  			<div class="row">
-	                  			<div class="col-sm-12 text-center">
-									@if (Session::has('loginId'))
-										<button type="submit" class="btn btn-primary btn-addtocart"><i class="icon-shopping-cart"></i>Add to cart</button>
-									</form>
+                  				<div class="row">
+	                  				<div class="col-sm-12 text-center">
+										@if (Session::has('loginId'))
+											<button type="submit" class="btn btn-primary btn-addtocart"><i class="icon-shopping-cart"></i>Add to cart</button>
+									{{-- </div>
+								</div> --}}
+							</form>
 									@else
 										<p class="addtocart"><a href="/signup" class="btn btn-primary btn-addtocart"><i class="icon-shopping-cart"></i> Add to Cart</a></p>
 									@endif

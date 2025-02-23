@@ -36,3 +36,12 @@ Route::get('/login', [AuthController::class, 'login']);
 Route::post('/login', [AuthController::class, 'postLogin']);
 
 Route::get('/logout', [AuthController::class, 'logout']) -> middleware('isLoggedIn');
+
+
+
+Route::get('/dashboard', [MainController::class, 'dashboard']);
+
+Route::get('/products', [MainController::class, 'product']);
+
+Route::get('/customers', [MainController::class, 'customer']);
+
