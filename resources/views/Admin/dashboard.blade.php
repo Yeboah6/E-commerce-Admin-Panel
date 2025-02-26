@@ -36,7 +36,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h3>20500</h3>
-                        <p class="text-muted">Site Analysis</p>
+                        <p class="text-muted">Products</p>
                         {{-- <div id="seo-anlytics1"></div> --}}
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h3>20500</h3>
-                        <p class="text-muted">Total Sales</p>
+                        <p class="text-muted">Orders</p>
                         {{-- <div id="seo-anlytics2"></div> --}}
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h3>28000</h3>
-                        <p class="text-muted">Total Visits</p>
+                        <p class="text-muted">Customers</p>
                         {{-- <div id="seo-anlytics3"></div> --}}
                     </div>
                 </div>

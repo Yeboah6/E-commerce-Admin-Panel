@@ -40,12 +40,16 @@
                             
                             @csrf
 						    <div class="form-group mb-3">
-						    	<label class="floating-label" for="Username">Username</label>
-						    	<input type="text" class="form-control" id="Username" placeholder="" name="user_name">
+						    	<label class="floating-label" for="Username">Name</label>
+						    	<input type="text" class="form-control" id="Username" placeholder="" name="name">
 						    </div>
 						    <div class="form-group mb-3">
 						    	<label class="floating-label" for="Email">Email address</label>
 						    	<input type="email" class="form-control" id="Email" placeholder="" name="email">
+						    </div>
+							<div class="form-group mb-3">
+						    	<label class="floating-label" for="number">Phone Number</label>
+						    	<input type="text" class="form-control" id="Username" placeholder="" name="number">
 						    </div>
 						    <div class="form-group mb-4">
 						    	<label class="floating-label" for="Password">Password</label>

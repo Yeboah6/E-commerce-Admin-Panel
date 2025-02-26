@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Customer;
 use App\Models\DeliveryAddress;
+use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
@@ -19,7 +20,7 @@ class MainController extends Controller
 
     // Displays Index / Home Page Function
     public function index() {
-        $data = array();
+        $data = [];
         if(Session::has('loginId')) {
             $data = Customer::where('id', '=', Session::get('loginId')) -> first();
         }
@@ -37,27 +38,38 @@ class MainController extends Controller
 
     // Displays About Page Function
     public function about() {
-        $data = array();
+        $data = [];
         if(Session::has('loginId')) {
             $data = Customer::where('id', '=', Session::get('loginId')) -> first();
         }
+        $cartCount = 0;
+        if (!empty($data)) {
+            $cartCount = Cart::where('customer_id', $data->id)->count();
+        }
+        $cart = Cart::where('customer_id', $data->id)->get(); // Get only user's cart items
 
-        return view('pages.about', compact('data'));
+        return view('pages.about', compact('data', 'cartCount'));
     }
 
     // Displays Wishlist Page Function
     public function wishlist() {
-        $data = array();
+        $data = [];
         if(Session::has('loginId')) {
             $data = Customer::where('id', '=', Session::get('loginId')) -> first();
         }
 
-        return view('pages.add-to-wishlist', compact('data'));
+        $cartCount = 0;
+        if (!empty($data)) {
+            $cartCount = Cart::where('customer_id', $data->id)->count();
+        }
+        $cart = Cart::where('customer_id', $data->id)->get(); // Get only user's cart items
+
+        return view('pages.add-to-wishlist', compact('data', 'cartCount'));
     }
 
     // Display Cart Page Function
     public function cart() {
-        $data = array();
+        $data = [];
         if(Session::has('loginId')) {
             $data = Customer::where('id', '=', Session::get('loginId')) -> first();
 
@@ -88,11 +100,9 @@ class MainController extends Controller
             }
         }
         }
-        // dd($data -> id);
             return view('pages.cart', compact('data', 'results', 'total', 'cartCount'));
         }
         else {
-            // dd($data -> id);
             return view('pages.cart#', compact('data'));
         }
     }
@@ -204,37 +214,55 @@ class MainController extends Controller
 
     // Display Contact Page Function
     public function contact() {
-        $data = array();
+        $data = [];
         if(Session::has('loginId')) {
             $data = Customer::where('id', '=', Session::get('loginId')) -> first();
         }
 
-        return view('pages.contact', compact('data'));
+        $cartCount = 0;
+        if (!empty($data)) {
+            $cartCount = Cart::where('customer_id', $data->id)->count();
+        }
+        $cart = Cart::where('customer_id', $data->id)->get(); // Get only user's cart items
+
+        return view('pages.contact', compact('data', 'cartCount'));
     }
 
     // Display Men Page Function
     public function men() {
-        $data = array();
+        $data = [];
         if(Session::has('loginId')) {
             $data = Customer::where('id', '=', Session::get('loginId')) -> first();
         }
 
-        return view('pages.men', compact('data'));
+        $cartCount = 0;
+        if (!empty($data)) {
+            $cartCount = Cart::where('customer_id', $data->id)->count();
+        }
+        $cart = Cart::where('customer_id', $data->id)->get(); // Get only user's cart items
+
+        return view('pages.men', compact('data', 'cartCount'));
     }
 
     // Display Order Page Function
     public function orderComplete() {
-        $data = array();
+        $data = [];
         if(Session::has('loginId')) {
             $data = Customer::where('id', '=', Session::get('loginId')) -> first();
         }
 
-        return view('pages.order-complete', compact('data'));
+        $cartCount = 0;
+        if (!empty($data)) {
+            $cartCount = Cart::where('customer_id', $data->id)->count();
+        }
+        $cart = Cart::where('customer_id', $data->id)->get(); // Get only user's cart items
+
+        return view('pages.order-complete', compact('data', 'cartCount'));
     }
 
     // Display Product Details Page Function
     public function productDetail($id) {
-        $data = array();
+        $data = [];
         if(Session::has('loginId')) {
             $data = Customer::where('id', '=', Session::get('loginId')) -> first();
         }
@@ -257,13 +285,21 @@ class MainController extends Controller
 
     // Display Women Page Function
     public function women() {
-        $data = array();
+        $data = [];
         if(Session::has('loginId')) {
             $data = Customer::where('id', '=', Session::get('loginId')) -> first();
         }
 
-        return view('pages.women', compact('data'));
+        $cartCount = 0;
+        if (!empty($data)) {
+            $cartCount = Cart::where('customer_id', $data->id)->count();
+        }
+        $cart = Cart::where('customer_id', $data->id)->get(); // Get only user's cart items
+
+        return view('pages.women', compact('data', 'cartCount'));
     }
+
+
 
 
     public function dashboard() {
@@ -271,10 +307,115 @@ class MainController extends Controller
     }
 
     public function product() {
-        return view('Admin.products');
+        $products = Products::all();
+        return view('Admin.products', compact('products'));
     }
 
     public function customer() {
-        return view('Admin.customers');
+        $customers = Customer::all();
+        return view('Admin.customers',compact('customers'));
     }
+
+
+    public function postProducts(Request $request) {
+        $validateData = $request->validate([
+            'product_name' => 'required|string',
+            'category' => 'required|string',
+            'price' => 'required|string',
+            'product_image' => 'nullable|file|mimes:jpeg,png,jpg,svg|max:5048', // 5MB max
+            'product_image2' => 'nullable|file|mimes:jpeg,png,jpg,svg|max:5048', // 5MB max
+            'product_image3' => 'nullable|file|mimes:jpeg,png,jpg,svg|max:5048', // 5MB max
+            'quantity' => 'required|string',
+            'description' => 'required|string'
+        ]);
+    
+        // Generate unique product ID
+        $product_id = 'PID' . uniqid();
+    
+        // Create new product instance
+        $product = new Products();
+        $product->fill([
+            'product_id' => $product_id,
+            'product_name' => $validateData['product_name'],
+            'category' => $validateData['category'],
+            'price' => $validateData['price'],
+            'quantity' => $validateData['quantity'],
+            'description' => $validateData['description']
+        ]);
+    
+        // Handle file upload
+        if ($request->hasFile('product_image')) {
+            $file = $request->file('product_image');
+            $fileName = 'IM_' . time() . '.' . $file->getClientOriginalExtension();
+            $filePath = $file->storeAs('uploads/product-images', $fileName, 'public');
+            $product->product_image = $fileName; // Save file name to DB
+        }
+        // Handle file upload
+        if ($request->hasFile('product_image2')) {
+            $file = $request->file('product_image2');
+            $fileName = 'IM2_' . time() . '.' . $file->getClientOriginalExtension();
+            $filePath = $file->storeAs('uploads/product-images', $fileName, 'public');
+            $product->product_image2 = $fileName; // Save file name to DB
+        }
+        // Handle file upload
+        if ($request->hasFile('product_image3')) {
+            $file = $request->file('product_image3');
+            $fileName = 'IM3_' . time() . '.' . $file->getClientOriginalExtension();
+            $filePath = $file->storeAs('uploads/product-images', $fileName, 'public');
+            $product->product_image3 = $fileName; // Save file name to DB
+        }
+    
+        // Save product to database
+        $product->save();
+    
+        return redirect('/products')->with('success', 'Product Added Successfully');
+    }
+
+    // Delete Product Function
+    public function delete($id) {
+        $delete = Products::findOrFail($id);
+
+        $delete -> delete();
+        return redirect() -> back() -> with('success', 'Product Successfully Deleted');
+    }
+    
+
+    // public function postProducts(Request $request) {
+    //     $validateData = $request -> validate([
+    //         'product_id' => 'required|string',
+    //         'product_name' => 'required|string',
+    //         'category' => 'required|string',
+    //         'price' => 'required|string',
+    //         'product_image' => 'required|nullable|file|mimes:jpeg,png,jpg,svg|max:5048', // 5MB max
+    //         'quantity' => 'required|string',
+    //     ]);
+
+    //     $product_id = 'PID' . mt_rand(1000, 9999);
+
+    //     $product = new Products();
+
+    //     $product -> fill([
+    //         'product_id' => $product_id,
+
+    //         'product_name' => $validateData['product_name'],
+    //         'category' => $validateData['category'],
+    //         'price' => $validateData['price'],
+    //         'quantity' => $validateData['quantity']
+    //     ]);
+
+    //     if($file = $request -> hasFile('product_image')) {
+         
+    //         $file = $request -> file('product_image');
+    //         $fileName = 'IM_'.$file -> getClientOriginalName();
+    //         $destinationPath = public_path().'/uploads/product-images/';
+    //         $file -> move($destinationPath, $fileName);
+    //         $product -> product_image = $fileName;
+    //     }
+
+    //     // dd($product);
+
+    //     $product -> save();
+    //     return redirect('/products') -> with('success', 'Products Added Successfully');
+
+    // }
 }

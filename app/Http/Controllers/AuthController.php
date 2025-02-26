@@ -18,16 +18,18 @@ class AuthController extends Controller
     public function postSignup(Request $request) {
 
         $validateData = $request -> validate([
-            'user_name' => 'required|unique:customers',
+            'name' => 'required|unique:customers',
             'email' => 'required|email|unique:customers',
+            'number' => 'required|string',
             'password' => 'required|min:8|max:12'
         ]);
 
         $customer = new Customer();
 
         $customer -> fill([
-            'user_name' => $validateData['user_name'],
+            'name' => $validateData['name'],
             'email' => $validateData['email'],
+            'number' => $validateData['number'],
             'password' => Hash::make($validateData['password'])
         ]);
 

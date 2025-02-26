@@ -12,22 +12,22 @@ Route::get('/about', [MainController::class, 'about']);
 
 Route::get('/wishlist', [MainController::class, 'wishlist']);
 
-Route::get('/cart', [MainController::class, 'cart']);
-Route::post('/add-to-cart', [MainController::class, 'addToCart']) -> middleware('isLoggedIn');
+Route::get('/cart', [MainController::class, 'cart'])-> middleware('isLoggedIn');
+Route::post('/add-to-cart', [MainController::class, 'addToCart']);
 Route::get('/remove-from-cart/{id}', [MainController::class, 'removeFromCart']) -> middleware('isLoggedIn');
 
 Route::get('/checkout', [MainController::class, 'checkout']);
 Route::post('/checkout', [MainController::class, 'postCheckout']);
 
-Route::get('/contact', [MainController::class, 'contact']);
+Route::get('/contact', [MainController::class, 'contact']) -> middleware('isLoggedIn');
 
-Route::get('/men', [MainController::class, 'men']);
+Route::get('/men', [MainController::class, 'men']) -> middleware('isLoggedIn');
 
 Route::get('/order-complete', [MainController::class, 'orderComplete']);
 
 Route::get('/product-detail/{id}', [MainController::class, 'productDetail']);
 
-Route::get('/women', [MainController::class, 'women']);
+Route::get('/women', [MainController::class, 'women']) -> middleware('isLoggedIn');
 
 Route::get('/signup', [AuthController::class, 'signup']);
 Route::post('/signup', [AuthController::class, 'postSignup']);
@@ -42,6 +42,9 @@ Route::get('/logout', [AuthController::class, 'logout']) -> middleware('isLogged
 Route::get('/dashboard', [MainController::class, 'dashboard']);
 
 Route::get('/products', [MainController::class, 'product']);
+Route::post('/product', [MainController::class, 'postProducts']) -> name('product');
+Route::get('/delete-product/{id}', [MainController::class, 'delete']) -> name('delete-product');
+
 
 Route::get('/customers', [MainController::class, 'customer']);
 

@@ -14,7 +14,7 @@
 							<ul>
 								{{-- <li>{{$data -> user_name}}</li> --}}
 								<li class="has-dropdown">
-									<a href="">{{$data -> user_name}}</a>
+									<a href="">{{$data -> name}}</a>
 									<ul class="dropdown">
 										<li><a href="">Account</a></li>
 										<li><a href="/order-complete">Order Complete</a></li>

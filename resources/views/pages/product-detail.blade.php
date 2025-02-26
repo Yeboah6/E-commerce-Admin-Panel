@@ -42,14 +42,6 @@
 							<h3>{{$file['brandName']}}</h3>
 							<p class="price">
 								<span>{{ $file['price']['current']['text'] ?? 'N/A' }}</span> 
-								{{-- <span class="rate">
-									<i class="icon-star-full"></i>
-									<i class="icon-star-full"></i>
-									<i class="icon-star-full"></i>
-									<i class="icon-star-full"></i>
-									<i class="icon-star-half"></i>
-									(74 Rating)
-								</span> --}}
 							</p>
 							<p>{{ $file['name'] }}
 							</p>

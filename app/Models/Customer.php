@@ -9,7 +9,9 @@ class Customer extends Model
     protected $table = 'customers';
 
     protected $fillable = [
-        'user_name',
+        'name',
+        'number',
+        'image',
         'email',
         'password'
     ];
