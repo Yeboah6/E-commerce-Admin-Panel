@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -73,5 +74,20 @@ class AuthController extends Controller
             Session::pull('loginId');
             return redirect('/login');
         }
+    }
+
+    public function account() {
+        $data = [];
+        if(Session::has('loginId')) {
+            $data = Customer::where('id', '=', Session::get('loginId')) -> first();
+        }
+
+        $cartCount = 0;
+        if (!empty($data)) {
+            $cartCount = Cart::where('customer_id', $data->id)->count();
+        }
+        $cart = Cart::where('customer_id', $data->id)->get(); // Get only user's cart items
+
+        return view('auth.account', compact('data', 'cartCount'));
     }
 }

@@ -378,6 +378,11 @@ class MainController extends Controller
         $delete -> delete();
         return redirect() -> back() -> with('success', 'Product Successfully Deleted');
     }
+
+
+    public function order() {
+        return view('Admin.order');
+    }
     
 
     // public function postProducts(Request $request) {

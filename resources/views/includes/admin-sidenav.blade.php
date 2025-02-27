@@ -18,7 +18,7 @@
 						<a href="/customers" class="nav-link"><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Customers</span></a>
 					</li>
                     <li class="nav-item">
-						<a href="" class="nav-link"><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Orders</span></a>
+						<a href="/orders" class="nav-link"><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Orders</span></a>
 					</li>
                     <li class="nav-item">
 						<a href="" class="nav-link"><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Payments</span></a>

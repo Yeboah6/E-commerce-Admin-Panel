@@ -16,13 +16,11 @@
 								<li class="has-dropdown">
 									<a href="">{{$data -> name}}</a>
 									<ul class="dropdown">
-										<li><a href="">Account</a></li>
+										<li><a href="/account">Account</a></li>
 										<li><a href="/order-complete">Order Complete</a></li>
 										<li><a href="/logout">Logout</a></li>
 									</ul>
 								</li>
-								{{-- <li><a href="/account">Account</a></li> --}}
-								{{-- <li><a href="/logout">Logout</a></li> --}}
 							</ul>
 
 						@else
@@ -31,17 +29,8 @@
 								<li><a href="/login">Login</a></li>
 							</ul>
 						@endif
-						
-					{{-- </div> --}}
-	            {{-- <form action="#" class="search-wrap">
-	               <div class="form-group">
-	                  <input type="search" class="form-control search" placeholder="Search">
-	                  <button class="btn btn-primary submit-search text-center" type="submit"><i class="icon-search"></i></button>
-	               </div>
-	            </form> --}}
-	         </div>
-			 
-		     </div>
+	         		</div>
+		     	</div>
 			<div class="row">
 				<div class="col-sm-12 text-left menu-1">
 					<ul>

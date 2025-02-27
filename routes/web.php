@@ -16,7 +16,7 @@ Route::get('/cart', [MainController::class, 'cart'])-> middleware('isLoggedIn');
 Route::post('/add-to-cart', [MainController::class, 'addToCart']);
 Route::get('/remove-from-cart/{id}', [MainController::class, 'removeFromCart']) -> middleware('isLoggedIn');
 
-Route::get('/checkout', [MainController::class, 'checkout']);
+Route::get('/checkout', [MainController::class, 'checkout']) -> middleware('isLoggedIn');
 Route::post('/checkout', [MainController::class, 'postCheckout']);
 
 Route::get('/contact', [MainController::class, 'contact']) -> middleware('isLoggedIn');
@@ -37,6 +37,9 @@ Route::post('/login', [AuthController::class, 'postLogin']);
 
 Route::get('/logout', [AuthController::class, 'logout']) -> middleware('isLoggedIn');
 
+Route::get('/account', [AuthController::class, 'account']) -> name('account') -> middleware('isLoggedIn');
+
+
 
 
 Route::get('/dashboard', [MainController::class, 'dashboard']);
@@ -47,4 +50,7 @@ Route::get('/delete-product/{id}', [MainController::class, 'delete']) -> name('d
 
 
 Route::get('/customers', [MainController::class, 'customer']);
+
+Route::get('/orders', [MainController::class, 'order']) -> name('order');
+
 
