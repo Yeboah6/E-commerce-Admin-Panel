@@ -17,12 +17,12 @@ return new class extends Migration
             $table -> bigInteger('customer_id')->unsigned()->index()->nullable();
             $table -> foreign('customer_id') -> references('id') -> on('customers') ->onDelete('cascade');
 
-            $table -> string('product_id');
+            $table -> string('product_id'); // Link address_id to Delivery Address
             $table -> string('quantity');
             $table->timestamps();
         });
     }
-
+ 
     /**
      * Reverse the migrations.
      */

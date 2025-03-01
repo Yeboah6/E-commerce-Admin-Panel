@@ -174,43 +174,76 @@ class MainController extends Controller
         return view('pages.checkout', compact('data', 'total', 'results', 'cartCount'));
     }
 
-    public function postCheckout(Request $request) {
-        $validateData = $request -> validate([
-            'customer_id' => 'required',
+    // Add Delivery Address Function
 
+    public function postDeliveryAddress(Request $request) {
+        $validateData = $request->validate([
+            'customer_id' => 'required',
             'country' => 'required|string',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'company_name' => 'string',
+            'company_name' => 'nullable|string',
             'address_1' => 'required|string',
-            'address_2' => 'string',
+            'address_2' => 'nullable|string',
             'city' => 'required|string',
             'state' => 'required|string',
             'zip_code' => 'required|string',
             'email' => 'required|string|email',
             'number' => 'required|string',
         ]);
-
-        $address = new DeliveryAddress();
-
-        $address -> fill([
-            'customer_id' => $validateData['customer_id'],
-            'country' => $validateData['country'],
-            'first_name' => $validateData['first_name'],
-            'last_name' => $validateData['last_name'],
-            'company_name' => $validateData['company_name'],
-            'address_1' => $validateData['address_1'],
-            'address_2' => $validateData['address_2'],
-            'city' => $validateData['city'],
-            'state' => $validateData['state'],
-            'zip_code' => $validateData['zip_code'],
-            'email' => $validateData['email'],
-            'number' => $validateData['number'],
-        ]);
-
-        $address -> save();
-        return redirect('/order-complete') -> with('fail', 'Data Not Saved');
+    
+        try {
+            $address = DeliveryAddress::create($validateData);
+            return response()->json(['success' => true, 'message' => 'Address added successfully!']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Failed to save address. Please try again.']);
+        }
     }
+    
+
+    // public function postDeliveryAddress(Request $request) {
+    //     $validateData = $request -> validate([
+    //         'customer_id' => 'required',
+
+    //         'country' => 'required|string',
+    //         'first_name' => 'required|string',
+    //         'last_name' => 'required|string',
+    //         'company_name' => 'string',
+    //         'address_1' => 'required|string',
+    //         'address_2' => 'string',
+    //         'city' => 'required|string',
+    //         'state' => 'required|string',
+    //         'zip_code' => 'required|string',
+    //         'email' => 'required|string|email',
+    //         'number' => 'required|string',
+    //     ]);
+
+    //     $address = new DeliveryAddress();
+
+    //     $address -> fill([
+    //         'customer_id' => $validateData['customer_id'],
+    //         'country' => $validateData['country'],
+    //         'first_name' => $validateData['first_name'],
+    //         'last_name' => $validateData['last_name'],
+    //         'company_name' => $validateData['company_name'],
+    //         'address_1' => $validateData['address_1'],
+    //         'address_2' => $validateData['address_2'],
+    //         'city' => $validateData['city'],
+    //         'state' => $validateData['state'],
+    //         'zip_code' => $validateData['zip_code'],
+    //         'email' => $validateData['email'],
+    //         'number' => $validateData['number'],
+    //     ]);
+
+    //     try {
+    //         $address -> save();
+    //         // return redirect('/order-complete') -> with('fail', 'Data Not Saved');
+    //         return response()->json(['success' => true, 'message' => 'Message sent successfully!']);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['success' => false, 'message' => 'Failed to send message. Please try again.']);
+    //     }
+        
+    // }
 
     // Display Contact Page Function
     public function contact() {
@@ -301,22 +334,24 @@ class MainController extends Controller
 
 
 
-
+    // Display Dashboard Page Function
     public function dashboard() {
         return view('Admin.dashboard');
     }
 
+    // Display Products Page Function
     public function product() {
         $products = Products::all();
         return view('Admin.products', compact('products'));
     }
 
+    // Display Customers Page Function
     public function customer() {
         $customers = Customer::all();
         return view('Admin.customers',compact('customers'));
     }
 
-
+    // Add Products Function
     public function postProducts(Request $request) {
         $validateData = $request->validate([
             'product_name' => 'required|string',
@@ -379,9 +414,13 @@ class MainController extends Controller
         return redirect() -> back() -> with('success', 'Product Successfully Deleted');
     }
 
-
+    // Display Admin Order Page Function 
     public function order() {
         return view('Admin.order');
+    }
+
+    public function addToOrder(Request $request) {
+
     }
     
 

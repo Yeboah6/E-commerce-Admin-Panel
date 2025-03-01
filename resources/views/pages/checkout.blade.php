@@ -38,13 +38,29 @@
 				</div>
 				<div class="row">
 					<div class="col-lg-8">
-						<form action="{{ url('/checkout') }}" method="POST" class="colorlib-form">
-							@if (Session::has('success'))
-				    	        	<div class="alert alert-success">{{ Session::get('success') }}</div>
-				            	@endif
-				            	@if (Session::has('fail'))
-				            		<div class="alert alert-danger">{{ Session::get('fail') }}</div>
-				            	@endif
+						<form id="contactForm" class="colorlib-form">
+							<style>
+
+                			/* Spinner Animation */
+                			.spinner {
+                			    display: inline-block;
+                			    width: 20px;
+                			    height: 20px;
+                			    border: 3px solid rgba(255, 255, 255, 0.3);
+                			    border-top: 3px solid #fff;
+                			    border-radius: 50%;
+                			    animation: spin 1s linear infinite;
+                			    margin-right: 8px;
+                			    vertical-align: middle;
+								background-color: #616161;
+                			}
+						
+                			@keyframes spin {
+                			    0% { transform: rotate(0deg); }
+                			    100% { transform: rotate(360deg); }
+                			}
+                
+                		</style>
 							@csrf
 							<h2>Billing Details</h2>
 								<input type="text" name="customer_id" value="{{ $data -> id}}">
@@ -126,32 +142,85 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="Phone">Phone Number</label>
-											<input type="text" id="zippostalcode" name="number" class="form-control" placeholder="Phone Number">
+											<input type="text" id="phoneNumber" name="number" class="form-control" placeholder="Phone Number">
 										</div>
 									</div>
-
-									{{-- <div class="col-md-12">
-										<div class="form-group">
-											<label for="country">Select Payment Method</label>
-										   <div class="form-field">
-											   <i class="icon icon-arrow-down3"></i>
-											  <select name="payment_method" id="people" class="form-control">
-													<option value="#">Select Payment Method</option>
-												  <option value="Mobile Money">Mobile Money</option>
-												  <option value="Paypal">Paypal</option>
-											  </select>
-										   </div>
-										</div>
-									 </div> --}}
 		               		</div>
-							   <div class="row">
-								<div class="col-md-12 text-center">
-									<button type="submit" class="btn btn-primary">Add Address</button>
+							   <div class="my-3">
+								{{-- <div class="loading" style="display: none;">
+									<span class="spinner"></span> Adding...
+								</div> --}}
+								<div class="error-message text-danger" class="loading" style="display: none;"></div>
+								<div class="sent-message text-success" style="display: none;">Your message has been sent. Thank you!</div>
+							  </div>
 
-									<p><a class="btn btn-primary" href="">Proceed to Payment</a></p>
-								</div>
+							  <div class="text-center">
+								<button type="submit" id="sendMessageBtn" class="btn btn-primary">Add Address</button>
 							</div>
 		            	</form>
+
+						        <!-- ✅ AJAX Script -->
+								<script>
+									document.addEventListener("DOMContentLoaded", function () {
+    									document.getElementById("contactForm").addEventListener("submit", function (event) {
+    									    event.preventDefault(); // Prevent page reload
+										
+    									    let formData = new FormData(this);
+    									    let sendMessageBtn = document.getElementById("sendMessageBtn");
+											let loadingImg = `<img class="spinner" src="{{ asset('../assets/images/icons8-spinner.gif') }}" alt="Loading..." width="25">`;
+    									    // let loadingImg = document.querySelector(".loading");
+    									    let errorMessage = document.querySelector(".error-message");
+    									    let sentMessage = document.querySelector(".sent-message");
+										
+    									    sendMessageBtn.disabled = true;
+    									    // loading.style.display = "block";
+											sendMessageBtn.innerHTML = loadingImg; // Replace text with spinner
+    									    errorMessage.style.display = "none";
+    									    sentMessage.style.display = "none";
+										
+    									    fetch("{{ url('/delivery-address') }}", {
+    									        method: "POST",
+    									        body: formData,
+    									        headers: {
+    									            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+    									        }
+    									    })
+    									    .then(response => response.json())
+    									    .then(data => {
+    									        sendMessageBtn.disabled = false;
+    									        loadingImg.style.display = "none";
+											
+    									        if (data.success) {
+    									            sentMessage.style.display = "block";
+    									            sentMessage.innerHTML = data.message;
+    									            document.getElementById("contactForm").reset();
+    									        } else {
+    									            errorMessage.style.display = "block";
+    									            errorMessage.innerHTML = data.message;
+    									        }
+    									    })
+    									    .catch(error => {
+    									        sendMessageBtn.disabled = false;
+    									        loadingImg.style.display = "none";
+    									        errorMessage.style.display = "block";
+    									        errorMessage.innerHTML = "Something went wrong. Please try again.";
+    									    });
+    									});
+									});
+
+								</script>
+
+						<form action="">
+							<div class="row">
+								<div class="col-md-12 text-center">
+									<input type="text" name="customer_id" value="{{ $data -> id}}">
+									<input type="text" name="product_id">
+									<input type="text" name="address_id">
+								
+									<p><button type="submit" class="btn btn-primary">Proceed to Payment</button></p>
+								</div>
+							</div>
+						</form>
 					</div>
 
 					<div class="col-lg-4">
@@ -178,14 +247,14 @@
 
 						   <div class="w-100"></div>
 
-						   {{-- <form action="{{ url('/checkout') }}" method="post">
-							@if (Session::has('success'))
+						   <form action="{{ url('/checkout') }}" method="post">
+								@if (Session::has('success'))
 				    	        	<div class="alert alert-success">{{ Session::get('success') }}</div>
 				            	@endif
 				            	@if (Session::has('fail'))
 				            		<div class="alert alert-danger">{{ Session::get('fail') }}</div>
 				            	@endif
-							@csrf
+								@csrf
 								<div class="col-md-12">
 									<div class="cart-detail">
 										<h2>Payment Method</h2>
@@ -197,22 +266,19 @@
 											</div>
 										</div>
 										<div class="form-group">
-											<div class="col-md-12">
-												<div class="radio">
-												<label><input type="radio" name="Paypal"> Paypal</label>
-												</div>
+											<div class="radio">
+												<label for="lname" style="font-weight: bold;">Mobile Number</label>
+												<input type="text" id="mobile_number" name="mobile_number" class="form-control" placeholder="Enter Mobile Number" style="width: 260px;">
 											</div>
 										</div>
 										<div class="form-group">
 											<div class="col-md-12">
-												<div class="checkbox">
-												<label><input type="checkbox" value=""> I have read and accept the terms and conditions</label>
-												</div>
+												<button type="submit" class="btn btn-primary">Make Payment</button>
 											</div>
 										</div>
 									</div>
 								</div>
-						   </form> --}}
+						   </form>
 						
 						</div>
 						
@@ -287,10 +353,9 @@
 				<div class="row">
 					<div class="col-sm-12 text-center">
 						<p>
-							<span><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></span> 
-							<span class="block">Demo Images: <a href="http://unsplash.co/" target="_blank">Unsplash</a> , <a href="http://pexels.com/" target="_blank">Pexels.com</a></span>
+							<span>
+								Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved
+							</span> 
 						</p>
 					</div>
 				</div>

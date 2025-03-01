@@ -35,6 +35,8 @@
 	<!-- Theme style  -->
 	<link rel="stylesheet" href="../assets/css/style.css">
 
+	<meta name="csrf-token" content="{{ csrf_token() }}">
+
 	</head>
 	<body>
 		@yield('content')

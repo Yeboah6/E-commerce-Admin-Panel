@@ -17,7 +17,7 @@ Route::post('/add-to-cart', [MainController::class, 'addToCart']);
 Route::get('/remove-from-cart/{id}', [MainController::class, 'removeFromCart']) -> middleware('isLoggedIn');
 
 Route::get('/checkout', [MainController::class, 'checkout']) -> middleware('isLoggedIn');
-Route::post('/checkout', [MainController::class, 'postCheckout']);
+Route::post('/delivery-address', [MainController::class, 'postDeliveryAddress']);
 
 Route::get('/contact', [MainController::class, 'contact']) -> middleware('isLoggedIn');
 
@@ -39,6 +39,7 @@ Route::get('/logout', [AuthController::class, 'logout']) -> middleware('isLogged
 
 Route::get('/account', [AuthController::class, 'account']) -> name('account') -> middleware('isLoggedIn');
 
+Route::post('/order', [MainController::class, 'addToOrder']);
 
 
 

@@ -21,8 +21,8 @@ return new class extends Migration
            $table -> bigInteger('product_id')->unsigned()->index()->nullable();
             $table -> foreign('product_id') -> references('id') -> on('products') ->onDelete('cascade');
 
-            $table -> string('quantity');
-            $table -> string('address_id');
+            // $table -> string('quantity');
+            $table -> string('address_id'); // Link address_id to Delivery Address
             $table -> string('status');
 
             $table->timestamps();
