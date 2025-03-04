@@ -39,6 +39,14 @@
 				            @endif
                             
                             @csrf
+							<div class="form-group mb-3">
+						    	<label class="floating-label" for="Role">Role</label>
+								<select class="form-control" name="role">
+									<option selected> -- Select Role -- </option>
+									<option value="customer">Customer</option>
+								</select>
+						    	{{-- <input type="text" class="form-control" id="Username" placeholder="" name="name"> --}}
+						    </div>
 						    <div class="form-group mb-3">
 						    	<label class="floating-label" for="Username">Name</label>
 						    	<input type="text" class="form-control" id="Username" placeholder="" name="name">

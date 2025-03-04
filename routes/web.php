@@ -43,15 +43,18 @@ Route::post('/order', [MainController::class, 'addToOrder']);
 
 
 
-Route::get('/dashboard', [MainController::class, 'dashboard']);
+Route::get('/dashboard', [MainController::class, 'dashboard'])  -> middleware('isAdminLoggedIn');
 
-Route::get('/products', [MainController::class, 'product']);
+Route::get('/products', [MainController::class, 'product'])  -> middleware('isAdminLoggedIn');
 Route::post('/product', [MainController::class, 'postProducts']) -> name('product');
 Route::get('/delete-product/{id}', [MainController::class, 'delete']) -> name('delete-product');
 
 
-Route::get('/customers', [MainController::class, 'customer']);
+Route::get('/customers', [MainController::class, 'customer'])  -> middleware('isAdminLoggedIn');
 
-Route::get('/orders', [MainController::class, 'order']) -> name('order');
+Route::get('/orders', [MainController::class, 'order']) -> name('order')  -> middleware('isAdminLoggedIn');
+
+Route::get('/profile', [AuthController::class, 'profile']) -> name('profile')  -> middleware('isAdminLoggedIn');
+
 
 

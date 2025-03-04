@@ -22,7 +22,6 @@
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/dashboard"><i class="feather icon-home"></i></a></li>
-                            {{-- <li class="breadcrumb-item"><a href="#!">Dashboard sale</a></li> --}}
                         </ul>
                     </div>
                 </div>
@@ -35,80 +34,35 @@
             <div class="col-xl-3 col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h3>20500</h3>
+                        <h3>{{ $products}}</h3>
                         <p class="text-muted">Products</p>
-                        {{-- <div id="seo-anlytics1"></div> --}}
                     </div>
                 </div>
             </div>
             <div class="col-xl-3 col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h3>20500</h3>
+                        <h3>0</h3>
                         <p class="text-muted">Orders</p>
-                        {{-- <div id="seo-anlytics2"></div> --}}
                     </div>
                 </div>
             </div>
             <div class="col-xl-3 col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h3>28000</h3>
+                        <h3>{{ $customers}}</h3>
                         <p class="text-muted">Customers</p>
-                        {{-- <div id="seo-anlytics3"></div> --}}
                     </div>
                 </div>
             </div>
             <div class="col-xl-3 col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <h3>59600</h3>
+                        <h3>0</h3>
                         <p class="text-muted">Total Usage</p>
-                        {{-- <div id="seo-anlytics4"></div> --}}
                     </div>
                 </div>
             </div>
-            <!-- seo analytics end -->
-            <!-- Latest Order start -->
-            {{-- <div class="col-lg-4 col-md-12">
-                <div class="card overflow-hidden">
-                    <div class="card-body bg-c-green pb-0">
-                        <div class="row text-white">
-                            <div class="col-auto">
-                                <h4 class="m-b-5 text-white">$654</h4>
-                                <h6 class="text-white">+1.65(2.56%)</h6>
-                            </div>
-                            <div class="col text-right">
-                                <h6 class="text-white">Friday</h6>
-                            </div>
-                        </div>
-                        <div id="sec-ecommerce-chart-line"></div>
-                        <div class="row justify-content-center">
-                            <div class="col-8">
-                                <div id="sec-ecommerce-chart-bar"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <h4>$2654.00</h4>
-                        <p class="text-muted">Sales in Nov.</p>
-                        <div class="row">
-                            <div class="col">
-                                <p class="text-muted m-b-5">From Market</p>
-                                <h6>$1860.00</h6>
-                            </div>
-                            <div class="col">
-                                <p class="text-muted m-b-5">Referral</p>
-                                <h6>$500.00</h6>
-                            </div>
-                            <div class="col">
-                                <p class="text-muted m-b-5">Affiliate</p>
-                                <h6>$294.00</h6>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
             <div class="col-lg-8 col-md-12">
                 <div class="card table-card latest-activity-card">
                     <div class="card-header">
@@ -292,28 +246,6 @@
                         </div>
                         <div class="text-right  m-r-20">
                             <a href="#!" class="b-b-primary text-primary">View all Customer Reviews</a>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
-            {{-- <div class="col-lg-4 col-md-12">
-                
-                <div class="card ">
-                    <div class="card-body ">
-                        <h2 class="text-center f-w-400 ">2,413</h2>
-                        <p class="text-center text-muted ">Total Sales</p>
-                        <div id="monthlyprofit-2"></div>
-                        <div class="m-t-20">
-                            <div class="row ">
-                                <div class="col-6 text-center ">
-                                    <h6 class="f-20 f-w-400">1578</h6>
-                                    <p class="text-muted f-14 m-b-0">Today</p>
-                                </div>
-                                <div class="col-6 text-center ">
-                                    <h6 class="f-20 f-w-400">1028</h6>
-                                    <p class="text-muted f-14 m-b-0">Yesterday</p>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

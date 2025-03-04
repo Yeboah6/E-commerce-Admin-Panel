@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminLogin;
 use App\Models\Cart;
 use App\Models\Customer;
 use Illuminate\Http\Request;
@@ -22,7 +23,8 @@ class AuthController extends Controller
             'name' => 'required|unique:customers',
             'email' => 'required|email|unique:customers',
             'number' => 'required|string',
-            'password' => 'required|min:8|max:12'
+            'password' => 'required|min:8|max:12',
+            'image' => 'nullable|'
         ]);
 
         $customer = new Customer();
@@ -56,6 +58,7 @@ class AuthController extends Controller
         ]);
 
         $user = Customer::where('email', '=', $request -> email) -> first();
+        $adminLogin = AdminLogin::where('email', '=', $request -> email) -> first();
         if($user) {
             if(Hash::check($request -> password, $user -> password)) {
                 $request -> session() -> put('loginId', $user -> id);
@@ -63,7 +66,14 @@ class AuthController extends Controller
             } else {
                 return back() -> with('fail', 'Incorrect Credentials!!');
             } 
-        } else {
+        } 
+        elseif ($adminLogin) {
+            if (Hash::check($request -> password, $adminLogin -> password)) {
+                $request -> session() -> put('loginId', $adminLogin -> id);
+                return redirect('/dashboard');
+            } else {
+                return back() -> with('fail', 'Incorrect Credentials');
+            }
             return back() -> with('fail', 'You do not access to this portal!!');
         }
     }
@@ -76,6 +86,7 @@ class AuthController extends Controller
         }
     }
 
+    // Display Customer Account Page Function
     public function account() {
         $data = [];
         if(Session::has('loginId')) {
@@ -89,5 +100,15 @@ class AuthController extends Controller
         $cart = Cart::where('customer_id', $data->id)->get(); // Get only user's cart items
 
         return view('auth.account', compact('data', 'cartCount'));
+    }
+
+    // Display Admin Profile Page Function
+    public function profile() {
+        $data = [];
+        if(Session::has('loginId')) {
+            $data = Customer::where('id', '=', Session::get('loginId')) -> first();
+        }
+
+        return view('auth.profile', compact('data'));
     }
 }

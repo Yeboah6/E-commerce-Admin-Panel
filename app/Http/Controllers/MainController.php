@@ -336,19 +336,37 @@ class MainController extends Controller
 
     // Display Dashboard Page Function
     public function dashboard() {
-        return view('Admin.dashboard');
+        $data = [];
+        if(Session::has('loginId')) {
+            $data = Customer::where('id', '=', Session::get('loginId')) -> first();
+        }
+
+        $customers = Customer::all() -> count();
+        $products = Products::all() -> count();
+
+        return view('Admin.dashboard', compact('data', 'customers', 'products'));
     }
 
     // Display Products Page Function
     public function product() {
+        $data = [];
+        if(Session::has('loginId')) {
+            $data = Customer::where('id', '=', Session::get('loginId')) -> first();
+        }
+
         $products = Products::all();
-        return view('Admin.products', compact('products'));
+        return view('Admin.products', compact('products', 'data'));
     }
 
     // Display Customers Page Function
     public function customer() {
+        $data = [];
+        if(Session::has('loginId')) {
+            $data = Customer::where('id', '=', Session::get('loginId')) -> first();
+        }
+
         $customers = Customer::all();
-        return view('Admin.customers',compact('customers'));
+        return view('Admin.customers',compact('customers', 'data'));
     }
 
     // Add Products Function
@@ -416,50 +434,16 @@ class MainController extends Controller
 
     // Display Admin Order Page Function 
     public function order() {
-        return view('Admin.order');
+        $data = [];
+        if(Session::has('loginId')) {
+            $data = Customer::where('id', '=', Session::get('loginId')) -> first();
+        }
+
+        return view('Admin.order', compact('data'));
     }
 
     public function addToOrder(Request $request) {
 
     }
     
-
-    // public function postProducts(Request $request) {
-    //     $validateData = $request -> validate([
-    //         'product_id' => 'required|string',
-    //         'product_name' => 'required|string',
-    //         'category' => 'required|string',
-    //         'price' => 'required|string',
-    //         'product_image' => 'required|nullable|file|mimes:jpeg,png,jpg,svg|max:5048', // 5MB max
-    //         'quantity' => 'required|string',
-    //     ]);
-
-    //     $product_id = 'PID' . mt_rand(1000, 9999);
-
-    //     $product = new Products();
-
-    //     $product -> fill([
-    //         'product_id' => $product_id,
-
-    //         'product_name' => $validateData['product_name'],
-    //         'category' => $validateData['category'],
-    //         'price' => $validateData['price'],
-    //         'quantity' => $validateData['quantity']
-    //     ]);
-
-    //     if($file = $request -> hasFile('product_image')) {
-         
-    //         $file = $request -> file('product_image');
-    //         $fileName = 'IM_'.$file -> getClientOriginalName();
-    //         $destinationPath = public_path().'/uploads/product-images/';
-    //         $file -> move($destinationPath, $fileName);
-    //         $product -> product_image = $fileName;
-    //     }
-
-    //     // dd($product);
-
-    //     $product -> save();
-    //     return redirect('/products') -> with('success', 'Products Added Successfully');
-
-    // }
 }
